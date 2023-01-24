@@ -7,6 +7,9 @@ typedef long long ll;
 const ll MOD = 998244353;
 int main()
 {
-    cout << -36 % MOD << endl;
+    vector<int> a(15,2);
+    cerr << a.capacity() << " " << a.size() << endl;
+    a[5] = 9;
+    cerr << a.capacity() << " " << a.size() << endl;
     return 0;
 }
