@@ -1,15 +1,30 @@
+#include <chrono>
 #include <iostream>
-#include <vector>
-#include <algorithm>
-#include <cmath>
-using namespace std;
-typedef long long ll;
-const ll MOD = 998244353;
-int main()
+
+unsigned long long fib(unsigned long long n) {
+    return (0==n || 1==n) ? 1 : fib(n-1) + fib(n-2);
+}
+
+int a = 4,b = 6;
+template <typename T>
+inline auto swap(T &x,T &y)
 {
-    vector<int> a(15,2);
-    cerr << a.capacity() << " " << a.size() << endl;
-    a[5] = 9;
-    cerr << a.capacity() << " " << a.size() << endl;
-    return 0;
+    T temp = std::move(x); x = std::move(y); y = std::move(temp);
+}
+
+int main() {
+    unsigned long long n = 0;
+    while (true) {
+        auto start = std::chrono::high_resolution_clock::now();
+        for (int i = 0;i <= 1e8;++i)
+        {
+            swap(a,b);
+        }
+        auto finish = std::chrono::high_resolution_clock::now();
+
+        auto microseconds = std::chrono::duration_cast<std::chrono::microseconds>(finish-start);
+        std::cout << microseconds.count() << "µs\n";
+        // if (microseconds > std::chrono::seconds(1))
+            break;
+    }
 }
