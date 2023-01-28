@@ -1,18 +1,17 @@
-import re
-t = int(input())
-n,m = map(int,input().split())
-pro = []
-for i in range(m):
-    pro.append(input())
-flag = True
-zuzong = False
-for i in range(n):
-    for j in range(m):
-        input()
-        pattern = "(/{2})?(freopen\(\"" + pro[j] + "\.in\",\"r\",stdin\);)$"
-        s = input().strip()
-        if re.match(pattern,"""freopen("woem.out","w",stdout);""") is None:
-            print(f"input is {s}")
-        input()
-        # pattern = "(/{2})?(freopen\(\"" + pro[j] + "\.out\",\"w\",stdout\);)$"
-        # if re.match(pattern,input().strip()) is None:
+from random import shuffle
+a = list(range(1,26))
+maxn = 1
+for i in range(10**2):
+    shuffle(a)
+    for i in range(1,25):
+        falg = True
+        temp = set(a[0:25 - i - 1])
+        for j in temp:
+            if j + 5 in temp or j + 8 in temp:
+                flag = True
+                break
+        if flag:
+            if i > maxn:
+                maxn = 25 - i
+            break
+print(maxn)
