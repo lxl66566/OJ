@@ -2,6 +2,7 @@
 #include <iostream>
 #include <array>
 #include <memory>
+#include <vector>
 using i32 = int32_t;
 int b(int a)
 {
@@ -22,7 +23,6 @@ int main()
     //     std ::cout << microseconds.count() << "µs\n";
     // }
     // auto p = std::make_unique<i32>(2);
-    auto p = std::make_shared<i32>(3);
-    std::shared_ptr<i32> q = p;
-
+    
+    
 }
