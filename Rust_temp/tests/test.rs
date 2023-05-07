@@ -1,8 +1,13 @@
-fn main()
-{
-    let mut a = vec![1,2,3,4,5,6,7,8,9,10];
-    a.iter_mut().enumerate().for_each(|(i,x)| {
-        *x += i;
-        println!("{} ",x);
-    });
+use std::collections::HashMap;
+
+fn count_elements(vec: &[i32]) -> HashMap<i32, usize> {
+    vec.iter().fold(HashMap::new(), |mut acc, &x| {
+        *acc.entry(x).or_insert(0) += 1
+    })
+}
+
+fn main() {
+    let vec = vec![1, 2, 2, 3, 3, 3];
+    let counts = count_elements(&vec);
+    println!("{:?}", counts);
 }

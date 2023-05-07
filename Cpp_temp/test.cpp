@@ -1,28 +1,16 @@
-#include <chrono>
 #include <iostream>
-#include <array>
-#include <memory>
 #include <vector>
+
 using i32 = int32_t;
-int b(int a)
-{
-    return a + 1;
-}
+using i64 = int64_t;
+using u64 = uint64_t;
+
 int main()
 {
-    // i32 n = 9;
-    // while (--n)
-    // {
-    //     auto start = std::chrono::high_resolution_clock::now();
-    //     for (int i = 0; i <= 1e9; ++i)
-    //     {
-    //     }
-    //     auto finish = std::chrono::high_resolution_clock::now();
-
-    //     auto microseconds = std::chrono::duration_cast<std::chrono::microseconds>(finish - start);
-    //     std ::cout << microseconds.count() << "µs\n";
-    // }
-    // auto p = std::make_unique<i32>(2);
-    
-    
+    std::vector<i32> a{1, 2, 3, 4, 5};
+    for (const auto &i : a)
+    {
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
 }

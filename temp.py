@@ -1,17 +1,9 @@
-from random import shuffle
-a = list(range(1,26))
-maxn = 1
-for i in range(10**2):
-    shuffle(a)
-    for i in range(1,25):
-        falg = True
-        temp = set(a[0:25 - i - 1])
-        for j in temp:
-            if j + 5 in temp or j + 8 in temp:
-                flag = True
-                break
-        if flag:
-            if i > maxn:
-                maxn = 25 - i
-            break
-print(maxn)
+print(sum(1 for i in ''.join(str(j) for j in range(1, 2021)) if i == '2'))
+breakpoint()
+a = []
+breakpoint()
+a.append(1)
+b = []
+b.append(2)
+breakpoint()
+a.append(3)
