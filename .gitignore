@@ -1,3 +1,5 @@
 *.exe
+*.jar
+*.class
 .vscode
-Rust_temp/target
+target/
