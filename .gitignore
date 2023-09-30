@@ -1,5 +1,4 @@
 *.exe
 *.jar
 *.class
-.vscode
 target/
