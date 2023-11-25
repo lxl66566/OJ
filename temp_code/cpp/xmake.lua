@@ -1,17 +1,17 @@
 add_rules("mode.debug", "mode.release")
-toolchain("my_llvm")
-    set_kind("standalone")
-    set_sdkdir([[C:\Users\lxl\scoop\apps\llvm\16.0.5]])
-toolchain_end()
-
+set_languages("c++2b")
 
 target("cpp")
+    set_default(true)
     set_kind("binary")
     add_files("src/*.cpp")
+    add_cxxflags("-stdlib=libc++", {tools = "clang"})
 
 target("test")
+    set_default(false)
     set_kind("binary")
     add_files("test/*.cpp")
+    add_cxxflags("-stdlib=libc++", {tools = "clang"})
 
 --
 -- If you want to known more usage about xmake, please see https://xmake.io

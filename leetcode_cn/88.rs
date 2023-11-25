@@ -1,5 +1,6 @@
 struct Solution;
 use std::collections::VecDeque;
+// 我使用一个 VecDeque 充当 "swap" 空间。想复杂了。
 impl Solution {
     pub fn merge(nums1: &mut Vec<i32>, m: i32, nums2: &mut Vec<i32>, n: i32) {
         if n == 0 {
