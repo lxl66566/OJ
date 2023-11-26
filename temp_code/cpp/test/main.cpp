@@ -1,63 +1,28 @@
-// modified  from
-// https://mariusbancila.ro/blog/2022/08/17/using-the-cpp23-expected-type/
-
-#include <algorithm>
-#include <cstdlib>
-#include <expected>
 #include <iostream>
-#include <vector>
-
-
-#if __has_include(<format>)
-#include <format>
-#endif
-
-enum class Status {
-  Ok,
-  AccessDenied,
-  DataSourceError,
-  DataError,
-};
-bool HasAcccess() { return true; }
-int OpenConnection() { return 0; }
-int Fetch() { return 0; }
-Status ReadData(std::vector<int> &data) {
-  if (!HasAcccess())
-    return Status::AccessDenied;
-  if (OpenConnection() != 0)
-    return Status::DataSourceError;
-  if (Fetch() != 0)
-    return Status::DataError;
-  data.push_back(42);
-  return Status::Ok;
-}
-
-void print_value(int const v) { std::cout << v << '\n'; }
-
-std::expected<std::vector<int>, Status> ReadData() {
-  if (!HasAcccess())
-    return std::unexpected<Status>{Status::AccessDenied};
-  if (OpenConnection() != 0)
-    return std::unexpected<Status>{Status::DataSourceError};
-  if (Fetch() != 0)
-    return std::unexpected<Status>{Status::DataError};
-  std::vector<int> data;
-  data.push_back(42);
-  return data;
-}
+#include <queue>
 
 int main() {
-  auto result = ReadData();
-  if (result) {
-    std::ranges::for_each(result.value(), print_value);
-  } else {
-#ifdef __cpp_lib_format
-    std::cout << std::format("Error code: {}", (int)result.error())
-              << std::endl;
-#else
-    std::cout << "Error code: " << (int)result.error() << std::endl;
-#endif
+  std::queue<int> myQueue;
+
+  // 先插入一些元素
+  myQueue.push(1);
+  myQueue.push(2);
+  myQueue.push(3);
+
+  // 直接对队列的元素进行修改
+  std::queue<int> &originalQueue = myQueue; // 使用引用
+  while (!originalQueue.empty()) {
+    int &element = originalQueue.front();
+    element = element + 1;
+    originalQueue.pop();
   }
 
-  return EXIT_SUCCESS;
+  // 打印修改后的队列元素
+  std::cout << "Modified Queue: ";
+  while (!myQueue.empty()) {
+    std::cout << myQueue.front() << " ";
+    myQueue.pop();
+  }
+
+  return 0;
 }
