@@ -1,6 +1,5 @@
 struct Solution;
-impl Solution {}
+
 fn main() {
-    let nums1 = vec![1, 1];
-    println!("{:#?}", Solution::);
+    println!("{:#?}", Solution::next_beautiful_number(1000));
 }
