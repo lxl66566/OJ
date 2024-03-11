@@ -1,94 +1,128 @@
-struct Solution;
+use std::borrow::BorrowMut;
+use std::cell::RefCell;
+use std::fmt;
+use std::rc::Rc;
 
-#[derive(Debug)]
-struct lock_vec {
-    pub v: Vec<u8>,
-    lock: usize,
+#[derive(Default)]
+struct Node<T> {
+    val: T,
+    next: Option<Rc<RefCell<Node<T>>>>,
+    prev: Option<Rc<RefCell<Node<T>>>>,
 }
-impl lock_vec {
-    pub fn new(v: Vec<u8>) -> Self {
-        let l = v.len();
-        lock_vec { lock: l, v }
-    }
-    pub fn last_mut(&mut self) -> Option<&mut u8> {
-        if self.v.len() > self.lock {
-            self.v.last_mut()
-        } else {
-            None
+impl<T> Node<T>
+where
+    T: Default,
+{
+    pub fn new(v: T) -> Self {
+        Self {
+            val: v,
+            ..Default::default()
         }
     }
-    pub fn pop(&mut self) -> Option<u8> {
-        if self.v.len() > self.lock {
-            self.v.pop()
-        } else {
-            None
+}
+struct MyLinkedList {
+    head: Rc<RefCell<Node<i32>>>,
+    tail: Rc<RefCell<Node<i32>>>,
+    size: usize,
+}
+impl MyLinkedList {
+    fn new() -> Self {
+        let head = Rc::new(RefCell::new(Node::default()));
+        MyLinkedList {
+            tail: head.clone(),
+            head,
+            size: 0,
         }
     }
-    pub fn push(&mut self, value: u8) {
-        self.v.push(value)
+
+    fn get_mut(&self, index: i32) -> Rc<RefCell<Node<i32>>> {
+        let mut node = self.head.clone();
+        for _ in 0..index {
+            node = node.clone().borrow().next.clone().unwrap();
+        }
+        node
     }
-    pub fn lock(&mut self) {
-        self.lock += 1;
-        self.v.resize_with(self.lock, || b'+');
+
+    fn get(&self, index: i32) -> i32 {
+        self.get_mut(index).borrow().val
     }
-    pub fn unlock(&mut self) {
-        self.lock -= 1
+
+    fn add_at_head(&mut self, val: i32) {
+        let mut node = Node::new(val);
+        node.next = Some(self.head.borrow().next.clone().unwrap());
+        node.prev = Some(self.head.borrow().next.clone().unwrap());
+        let some_rc_node = Some(Rc::new(RefCell::new(node)));
+        if let Some(next) = self.head.borrow().next.as_deref() {
+            next.borrow_mut().prev.clone_from(&some_rc_node);
+        }
+        self.head.borrow().next.borrow_mut() = some_rc_node;
+        self.size += 1;
+    }
+
+    fn add_at_tail(&mut self, val: i32) {
+        let mut node = Node::new(val);
+        node.next.clone_from(&self.tail.borrow().next);
+        node.prev.clone_from(&self.tail.borrow().prev);
+        let rc_node = Rc::new(RefCell::new(node));
+        let prev_tail = self
+            .tail
+            .borrow()
+            .prev
+            .clone()
+            .unwrap_or_else(|| self.head.clone());
+        prev_tail
+            .clone()
+            .borrow_mut()
+            .next
+            .borrow_mut()
+            .clone_from(&Some(rc_node.clone()));
+        self.tail = rc_node;
+        self.size += 1;
+    }
+
+    fn add_at_index(&mut self, index: i32, val: i32) {
+        let node = self.get_mut(index);
+        let mut new_node = Node::new(val);
+        new_node.prev = Some(node.clone());
+        new_node.next = node.borrow().next.clone();
+        let rc_new_node = Rc::new(RefCell::new(new_node));
+        if let Some(next) = node.borrow().next.clone() {
+            next.borrow_mut().prev = Some(rc_new_node.clone());
+        }
+        node.borrow_mut().next = Some(rc_new_node);
+        self.size += 1;
+    }
+
+    // fn delete_at_index(&self, index: i32) {
+
+    // }
+}
+
+impl FromIterator<i32> for MyLinkedList {
+    fn from_iter<T: IntoIterator<Item = i32>>(iter: T) -> Self {
+        let mut l = Self::new();
+        for i in iter.into_iter() {
+            l.add_at_tail(i);
+        }
+        l
     }
 }
 
-impl Solution {
-    pub fn calculate(s: String) -> i32 {
-        let mut num_stack: Vec<i32> = vec![0];
-        let mut op_stack: lock_vec = lock_vec::new(vec![]);
-        for i in s.bytes() {
-            match i {
-                b' ' => continue,
-                b'0'..=b'9' => {
-                    // dbg!(&i - b'0');
-                    let num = (i - b'0') as i32;
-                    match op_stack.pop() {
-                        Some(b'+') => *num_stack.last_mut().unwrap() += num,
-                        Some(b'-') => *num_stack.last_mut().unwrap() -= num,
-                        None => {
-                            let lastnum = num_stack.last_mut().unwrap();
-                            *lastnum = *lastnum * 10 + num;
-                        }
-                        _ => unreachable!(),
-                    }
-                }
-                b'+' | b'-' => op_stack.push(i),
-                b'(' => {
-                    op_stack.lock();
-                    num_stack.push(0);
-                }
-                b')' => {
-                    op_stack.unlock();
-                }
-                _ => unreachable!(),
-            }
-            // dbg!(&num_stack);
+impl fmt::Debug for MyLinkedList {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "[ ")?;
+        let mut node = self.head.clone();
+        while let Some(next) = node.clone().borrow().next.clone() {
+            node = next.clone();
+            write!(f, "{} ", next.borrow().val)?;
         }
-        // dbg!(&num_stack, &op_stack);
-        op_stack.lock = 0;
-        while let Some(op) = op_stack.pop() {
-            let n = num_stack.pop().unwrap();
-            let temp = &mut 0;
-            let last = num_stack.last_mut().unwrap_or(temp);
-            match op {
-                b'+' => *last += n,
-                b'-' => *last -= n,
-                _ => unreachable!(),
-            }
-        }
-        num_stack.into_iter().sum()
+        write!(f, "]")?;
+        Ok(())
     }
 }
+
 fn main() {
-    println!("{:#?}", Solution::calculate("1+1".into()));
-    println!("{:#?}", Solution::calculate(" 2-1 + 2 ".into()));
-    println!("{:#?}", Solution::calculate("(1+(4+5+2)-3)+(6+8)".into()));
-    println!("{:#?}", Solution::calculate("2147483647".into()));
-    println!("{:#?}", Solution::calculate("1-(     -2)".into()));
-    println!("{:#?}", Solution::calculate("- (3 + (4 + 5))".into()));
-    println!("{:#?}", Solution::calculate("1-11".into()));
+    let mut l = MyLinkedList::from_iter([1, 2, 3, 4]);
+    l.add_at_index(2, 6);
+    println!("{:#?}", l);
 }
