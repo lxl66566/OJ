@@ -1,3 +1,3 @@
 from pprint import pprint
 
-pprint(Solution())
+pprint(param_2)
