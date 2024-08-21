@@ -1,5 +1,6 @@
 *.exe
 *.class
+test*.*
 
 node_modules/
 

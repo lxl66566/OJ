@@ -1,3 +1,3 @@
 from pprint import pprint
 
-pprint(param_2)
+pprint("")
