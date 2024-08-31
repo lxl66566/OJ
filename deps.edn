@@ -1,7 +1,0 @@
-; the file for clojure code
-
-{:paths ["temp_code/clojure/src"]
- :deps {}
- :aliases {:test {:extra-paths ["test"]}
-           :build {:deps {io.github.clojure/tools.build {:git/tag "v2.3.4" :git/sha "SHA"}}
-                   :ns-default build}}}
