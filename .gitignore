@@ -1,3 +1,4 @@
+# middle
 *.exe
 *.class
 test*.*
@@ -10,6 +11,7 @@ node_modules/
 .cpcache/
 /build
 
+#
 pom.xml
 pom.xml.asc
 *.iml
@@ -21,7 +23,12 @@ pom.xml.asc
 .nrepl-*
 .DS_Store
 
+# clojure
 .calva/output-window
 .calva/repl.calva-repl
 .lsp/.cache
 .clj-kondo/.cache
+
+# Xmake cache
+.xmake/
+build/
