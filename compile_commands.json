@@ -1,0 +1,11 @@
+[
+{
+  "directory": "D:\\program\\OJ",
+  "arguments": ["D:\\software\\VS\\VC\\Tools\\MSVC\\14.40.33807\\bin\\HostX64\\x64\\cl.exe", "/c", "/nologo", "/Ox", "/std:c++latest", "/EHsc", "/DNDEBUG", "/Fobuild\\.objs\\test\\windows\\x64\\release\\temp_code\\cpp\\test\\main.cpp.obj", "temp_code\\cpp\\test\\main.cpp"],
+  "file": "temp_code\\cpp\\test\\main.cpp"
+},
+{
+  "directory": "D:\\program\\OJ",
+  "arguments": ["D:\\software\\VS\\VC\\Tools\\MSVC\\14.40.33807\\bin\\HostX64\\x64\\cl.exe", "/c", "/nologo", "/Ox", "/std:c++latest", "/EHsc", "/DNDEBUG", "/Fobuild\\.objs\\cpp\\windows\\x64\\release\\temp_code\\cpp\\src\\main.cpp.obj", "temp_code\\cpp\\src\\main.cpp"],
+  "file": "temp_code\\cpp\\src\\main.cpp"
+}]

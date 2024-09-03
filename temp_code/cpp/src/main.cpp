@@ -1,7 +1,10 @@
 // #include "template.h"
 #include <algorithm>
 #include <iostream>
+#include <numeric>
+#include <ranges>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 // using namespace absx;
