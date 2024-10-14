@@ -4,7 +4,9 @@
 #include <climits>
 #include <cstdint>
 #include <iostream>
+#include <iterator> // for std::ostream_iterator
 #include <queue>
+#include <ranges>
 #include <vector>
 
 namespace absx {
