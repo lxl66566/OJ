@@ -1,3 +1,1 @@
-struct Solution;
 
-fn main() {}
