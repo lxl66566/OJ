@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 git add -A
-git commit -m $(date "+%Y%m%d-%H:%M:%S")
+git commit --allow-empty-message -m "$*"
 git push origin main
