@@ -1,4 +1,5 @@
 //! 给出 N 个点（1..=N）和 M 个数字对 (a, b)，表示 a 点和 b 点**不能**被分在一组。求最少需要分多少组，可以满足需求。
+//! 这玩意其实是 [Welsh–Powell 算法](https://oi-wiki.org/graph/color/#welshpowell-%E7%AE%97%E6%B3%95)，我之前没听过，但是笔试就自己写出来了。
 
 #[derive(PartialEq, Eq, Clone, Debug)]
 pub struct Point {
